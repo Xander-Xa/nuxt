@@ -1,0 +1,24 @@
+<script>
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
+const installText = document.getElementById('installText');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = 'inline-block';
+  installText.textContent = 'Install CryptoVerse on your phone';
+});
+
+installBtn.addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const choice = await deferredPrompt.userChoice;
+  if (choice.outcome === 'accepted') {
+    installText.textContent = '✅ App installed!';
+  } else {
+    installText.textContent = '❌ Installation cancelled';
+  }
+  deferredPrompt = null;
+});
+</script>
